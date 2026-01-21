@@ -1,0 +1,33 @@
+version: "3.9"
+
+services:
+  db:
+    image: postgres:15
+    container_name: autoria_db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: Europe/Kyiv
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: autoria_app
+    env_file:
+      - .env
+    depends_on:
+      - db
+    volumes:
+      - ./dumps:/app/dumps
+    environment:
+      TZ: Europe/Kyiv 
+    command: sh -c "sleep 5 && python -m app.main"
+
+volumes:
+  pgdata:

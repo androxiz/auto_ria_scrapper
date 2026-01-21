@@ -1,0 +1,7 @@
+aiohttp
+asyncio
+lxml
+python-dotenv
+SQLAlchemy==2.0.25
+asyncpg
+APScheduler
